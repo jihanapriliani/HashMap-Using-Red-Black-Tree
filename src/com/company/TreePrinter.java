@@ -1,8 +1,13 @@
 package com.company;
 
+import java.io.*;
 import java.io.PrintStream;
 
 public class TreePrinter {
+    public static String ANSI_RESET = "\u001B[0m";
+    public static String ANSI_BLACK = "\u001B[30m";
+    public static String ANSI_RED = "\u001B[31m";
+
     private Node tree;
 
     TreePrinter(Node tree) {
@@ -13,7 +18,12 @@ public class TreePrinter {
         if (root == null) return "";
 
         StringBuilder sb = new StringBuilder();
-        sb.append(root.getData() + " : " + (root.isColor() == true ? "black" : "red"));
+
+        if (root.isColor() == true) {
+            sb.append(ANSI_BLACK + root.getKey() + " : " + root.getValue() + ANSI_RESET);
+        } else {
+            sb.append(ANSI_RED + root.getKey() + " : " + root.getValue() + ANSI_RESET);
+        }
 
         String pointerRight = "└── r ── ";
         String pointerLeft = (root.getRight() != null) ? "├── l ── " : "└── l ── ";
@@ -29,7 +39,12 @@ public class TreePrinter {
             sb.append("\n");
             sb.append(padding);
             sb.append(pointer);
-            sb.append(node.getData() + " : " + (node.isColor() == true ? "black" : "red"));
+
+            if (node.isColor() == true) {
+                sb.append(ANSI_BLACK + node.getKey() + " : " + node.getValue() + ANSI_RESET);
+            } else {
+                sb.append(ANSI_RED + node.getKey() + " : " + node.getValue() + ANSI_RESET);
+            }
 
             StringBuilder paddingBuilder = new StringBuilder(padding);
             if (hasRightSibling) {

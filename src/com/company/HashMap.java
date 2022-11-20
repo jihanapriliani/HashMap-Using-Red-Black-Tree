@@ -1,10 +1,17 @@
 package com.company;
 
-public class RedBlackTree {
+import java.io.*;
+
+public class HashMap {
     private Node root;
+    private boolean isCaseSensitive;
 
     static private boolean RED = false;
     static private boolean BLACK = true;
+
+    HashMap(boolean isCaseSensitive) {
+        this.isCaseSensitive = isCaseSensitive;
+    }
 
     public Node getRoot() {
         return root;
@@ -43,49 +50,98 @@ public class RedBlackTree {
     }
 
 //    used to search spesific node based on the data or key
-    public Node searchNode(int key) {
+    public Node searchNode(String key) {
         Node node = root;
-        while (node != null) {
-            if (key == node.getData()) {
-                return node;
-            } else if (key < node.getData()) {
-                node = node.getLeft();
-            } else {
-                node = node.getRight();
+
+
+        if (this.isCaseSensitive == true) {
+            while (node != null) {
+                if (key.compareTo(node.getKey()) == 0) {
+                    return node;
+                } else if (key.compareTo(node.getKey()) < 0) {
+                    node = node.getLeft();
+                } else {
+                    node = node.getRight();
+                }
+            }
+        } else {
+            while (node != null) {
+                if (key.compareToIgnoreCase(node.getKey()) == 0) {
+                    return node;
+                } else if (key.compareToIgnoreCase(node.getKey()) < 0) {
+                    node = node.getLeft();
+                } else {
+                    node = node.getRight();
+                }
             }
         }
+
         return null;
     }
 
 //    used to insert node
-    public void insertNode(int key) {
+    public void insertNode(String key, String value) {
         Node node = root;
         Node parent = null;
 
-        while (node != null) {
-            parent = node;
-            if (key < node.getData()) {
-                node = node.getLeft();
-            } else if (key > node.getData()) {
-                node = node.getRight();
+        try {
+            if (this.isCaseSensitive == true) {
+                while (node != null) {
+                    parent = node;
+                    if (key.compareTo(node.getKey()) < 0) {
+                        node = node.getLeft();
+                    } else if (key.compareTo(node.getKey()) > 0) {
+                        node = node.getRight();
+                    } else {
+                        throw new IllegalArgumentException("Tree already contains a node with that key!!");
+                    }
+                }
             } else {
-                throw new IllegalArgumentException("Tree already contains a node with that value!!");
+                while (node != null) {
+                    parent = node;
+                    if (key.compareToIgnoreCase(node.getKey()) < 0) {
+                        node = node.getLeft();
+                    } else if (key.compareToIgnoreCase(node.getKey()) > 0) {
+                        node = node.getRight();
+                    } else {
+                        throw new IllegalArgumentException("Tree already contains a node with that key!!");
+                    }
+                }
             }
+
+
+            Node newNode = new Node(key, value);
+            newNode.setColor(RED);
+
+            if (this.isCaseSensitive == true) {
+                if (parent == null) {
+                    root = newNode;
+                } else if (key.compareTo(parent.getKey()) < 0) {
+                    parent.setLeft(newNode);
+                } else {
+                    parent.setRight(newNode);
+                }
+            } else {
+                if (parent == null) {
+                    root = newNode;
+                } else if (key.compareToIgnoreCase(parent.getKey()) < 0) {
+                    parent.setLeft(newNode);
+                } else {
+                    parent.setRight(newNode);
+                }
+            }
+
+            newNode.setParent(parent);
+
+            fixRedBlackPropertiesAfterInsert(newNode);
+
+        } catch(Exception err) {
+            String ANSI_RED_BACKGROUND = "\u001B[41m";
+            String ANSI_RESET = "\u001B[0m";
+
+            System.out.println(ANSI_RED_BACKGROUND + "Can not insert node: " + err.getMessage() + ANSI_RESET);
         }
 
-        Node newNode = new Node(key);
-        newNode.setColor(RED);
-        if (parent == null) {
-            root = newNode;
-        } else if (key < parent.getData()) {
-            parent.setLeft(newNode);
-        } else {
-            parent.setRight(newNode);
-        }
-
-        newNode.setParent(parent);
-
-        fixRedBlackPropertiesAfterInsert(newNode);
     }
 
 //    after inserting node used to recolor the violated nodes
@@ -139,16 +195,27 @@ public class RedBlackTree {
     }
 
 //    used to delete node
-    public void deleteNode(int key) {
+    public void deleteNode(String key) {
         Node node = root;
 
-        while (node != null && node.getData() != key) {
-            if (key < node.getData()) {
-                node =  node.getLeft();
-            } else {
-                node = node.getRight();
+        if (this.isCaseSensitive == true) {
+            while (node != null && node.getKey().compareTo(key) != 0) {
+                if (key.compareTo(node.getKey()) < 0) {
+                    node =  node.getLeft();
+                } else {
+                    node = node.getRight();
+                }
+            }
+        } else {
+            while (node != null && node.getKey().compareToIgnoreCase(key) != 0) {
+                if (key.compareToIgnoreCase(node.getKey()) < 0) {
+                    node =  node.getLeft();
+                } else {
+                    node = node.getRight();
+                }
             }
         }
+
 
         if (node == null) {
             return;
@@ -161,7 +228,7 @@ public class RedBlackTree {
             deleteNodeColor = node.isColor();
         } else {
             Node inOrderSuccessor = findMinimum(node.getRight());
-            node.setData(inOrderSuccessor.getData());
+            node.setKey(inOrderSuccessor.getKey());
 
             movedUpNode = deleteNodeWithZeroOrOneChild(inOrderSuccessor);
             deleteNodeColor = inOrderSuccessor.isColor();
@@ -315,7 +382,7 @@ public class RedBlackTree {
 
     private static class NilNode extends Node {
         private NilNode() {
-            super(0);
+            super("", "");
             this.setColor(BLACK);
         }
     }

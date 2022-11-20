@@ -1,21 +1,30 @@
 package com.company;
 
 public class Node {
-    private int data;
+    private String key, value;
     private Node parent, left, right;
 
     private boolean color;
 
-    Node(int data) {
-        this.data = data;
+    Node(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public int getData() {
-        return data;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public void setData(int data) {
-        this.data = data;
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public Node getParent() {

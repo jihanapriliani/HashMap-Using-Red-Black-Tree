@@ -3,43 +3,55 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-	    RedBlackTree rbt = new RedBlackTree();
+        System.out.println("=====> Boundary For In CaseSensitive <======");
 
+	    HashMap hmCaseSen = new HashMap(true);
 
-        System.out.println("Menambahkan 2 ke dalam tree");
-        rbt.insertNode(2);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("== Menambahkan 'nama' ke dalam tree");
+        hmCaseSen.insertNode("nama", "lorem ipsum");
+        new TreePrinter(hmCaseSen.getRoot()).print(System.out);
         System.out.println();
 
-        System.out.println("Menambahkan 14 ke dalam tree");
-        rbt.insertNode(14);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("== Menambahkan 'umur' ke dalam tree");
+        hmCaseSen.insertNode("umur", "19 tahun");
+        new TreePrinter(hmCaseSen.getRoot()).print(System.out);
         System.out.println();
 
-        System.out.println("Menambahkan 3 ke dalam tree");
-        rbt.insertNode(3);
-        new TreePrinter(rbt.getRoot()).print(System.out);
-        System.out.println();
-
-        System.out.println("Menambahkan 100 ke dalam tree");
-        rbt.insertNode(100);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("== Menambahkan 'Nama' ke dalam tree");
+        hmCaseSen.insertNode("Nama", "lorem ipsum color");
+        new TreePrinter(hmCaseSen.getRoot()).print(System.out);
         System.out.println();
 
 
-        System.out.println("Menambahkan 10 ke dalam tree");
-        rbt.insertNode(10);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("\n\n\n\n=====> Boundary For Not CaseSensitive <======");
+
+
+        HashMap hmNotCaseSen = new HashMap(false);
+
+        System.out.println("== Menambahkan 'nama' ke dalam tree");
+        hmNotCaseSen.insertNode("nama", "lorem ipsum");
+        new TreePrinter(hmNotCaseSen.getRoot()).print(System.out);
         System.out.println();
 
-        System.out.println("Menambahkan 23 ke dalam tree");
-        rbt.insertNode(23);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("== Menambahkan 'umur' ke dalam tree");
+        hmNotCaseSen.insertNode("umur", "19 tahun");
+        new TreePrinter(hmNotCaseSen.getRoot()).print(System.out);
         System.out.println();
 
-        System.out.println("Menghapus 3 dari dalam tree");
-        rbt.deleteNode(3);
-        new TreePrinter(rbt.getRoot()).print(System.out);
+        System.out.println("== Menambahkan 'id' ke dalam tree");
+        hmNotCaseSen.insertNode("id", "0123456789");
+        new TreePrinter(hmNotCaseSen.getRoot()).print(System.out);
+        System.out.println();
+
+        System.out.println("== Menambahkan 'Nama' ke dalam tree");
+        hmNotCaseSen.insertNode("Nama", "lorem ipsum dolor");
+        new TreePrinter(hmNotCaseSen.getRoot()).print(System.out);
+        System.out.println();
+
+
+        System.out.println("== Menambahkan 'status' ke dalam tree");
+        hmNotCaseSen.insertNode("status", "aktif");
+        new TreePrinter(hmNotCaseSen.getRoot()).print(System.out);
         System.out.println();
 
     }
